@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
 from django.core.mail import send_mail
 from django.views.generic import ListView, CreateView, DetailView
+from django.db.models import Count
 from taggit.models import Tag
 # Create your views here.
 from .models import Post, Comment
