@@ -3,6 +3,7 @@
 {% block title %}{{post.title}}
 {% endblock %}
 
+{% load blog_tags %}
 {% block content %}
     <h1>{{ post.title }}</h1>
     <p class="date">
@@ -11,11 +12,11 @@
 
     {{ post.body|markdown }}
 
-    <p>
-        <a href="{% url "blog:post_share" post.id %}">
-            Share this post
-        </a>
-    </p>
+{#    <p>#}
+{#        <a href="{% url "post_share" post.id %}">#}
+{#            Share this post#}
+{#        </a>#}
+{#    </p>#}
 
     <!-- Comments of the post -->
     {% with comments.count as total_comments %}
@@ -40,11 +41,16 @@
     {% if new_comment %}
         <h2>Your comment has been added.</h2>
     {% else %}
+{#        <a href="{% url 'comment_create' post_slug=post.slug %}">Add a new comment</a>#}
         <h2>Add a new comment</h2>
-        <form method="post">
-            {{ comment_form.as_p }}
+        {% load bootstrap4 %}
+
+          {{ form.media }}
+          <form method="post" id={{ id }}>
             {% csrf_token %}
-            <p><input type="submit" value="Add comment"></p>
-        </form>
+            {% bootstrap_form form %}
+              <p><input type="submit" value="Add comment"></p>
+          </form>
+
     {% endif %}
 {% endblock %}

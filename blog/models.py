@@ -6,6 +6,8 @@ from django.db import models
 from django.urls import reverse_lazy, reverse
 from django.utils import timezone
 from django.contrib.auth.models import User
+from taggit.managers import TaggableManager
+from .managers import PublishedManager
 
 
 class Post(models.Model):
@@ -28,6 +30,11 @@ class Post(models.Model):
     status = models.CharField(max_length=10,
                               choices=STATUS_CODE,
                               default='draft')
+    # default and custom managers
+    objects = models.Manager()
+    published = PublishedManager()
+    # tagging
+    tags = TaggableManager()
 
     class Meta:
         ordering = ('-publish',) # Sort posts by publish date in descending order.

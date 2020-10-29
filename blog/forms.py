@@ -14,3 +14,10 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ('name', 'email', 'body')
+
+    # def save(self, commit=True):
+    #     instance = super().save(commit=False)
+    #     instance.post = self.cleaned_data['post']
+    #     if commit:
+    #         instance.save()
+    #     return instance
