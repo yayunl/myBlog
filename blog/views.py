@@ -88,12 +88,17 @@ class PostDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        obj = context.get('object') # get the post
+        obj = context.get('object') # get the current post
         # Get active comments for this post
         comments = obj.comments.filter(active=True)
         context['comments'] = comments
         context['total_comments'] = comments.count()
         # Pass an empty comment form
         context['form'] = CommentForm()
+        # List of similar posts
+        post_tags_ids = obj.tags.values_list('id', flat=True)
+        similar_posts = Post.published.filter(tags__in=post_tags_ids).exclude(id=obj.id)
+        similar_posts = similar_posts.annotate(num_same_tags=Count('tags')).order_by('-num_same_tags', '-publish')[:4]
+        context['similar_posts'] = similar_posts
         return context
 
